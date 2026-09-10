@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Dynamic Discord Mockup</title>
+  
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    html, body {
+      width: 100vw;
+      height: 100dvh;
+      overflow: hidden;
+      position: relative;
+      background-color: #1f1f1f;
+    }
+
+    body {
+      animation: bodyBgAnimation 6s ease-in-out infinite;
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    @keyframes bodyBgAnimation {
+      0%, 100% { background-color: #1f1f1f; }
+      50% { background-color: #252525; }
+    }
+
+    /* Ambient Siren Lights */
+    .police-lights-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100dvh;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .siren-circle {
+      position: absolute;
+      width: min(500px, 80vw, 80vh);
+      height: min(500px, 80vw, 80vh);
+      border-radius: 50%;
+      filter: blur(80px);
+      will-change: transform, opacity;
+    }
+
+    .siren-red {
+      background: radial-gradient(circle, rgba(255, 0, 51, 0.85) 0%, rgba(255, 0, 51, 0) 70%);
+      animation: policeOrbitRed 4s infinite ease-in-out;
+    }
+
+    .siren-blue {
+      background: radial-gradient(circle, rgba(0, 102, 255, 0.85) 0%, rgba(0, 102, 255, 0) 70%);
+      animation: policeOrbitBlue 4s infinite ease-in-out;
+    }
+
+    @keyframes policeOrbitRed {
+      0%, 100% { transform: translate(-150px, -100px) scale(0.9); opacity: 0.4; }
+      50% { transform: translate(150px, 100px) scale(0.85); opacity: 0.85; }
+    }
+
+    @keyframes policeOrbitBlue {
+      0%, 100% { transform: translate(150px, 100px) scale(0.85); opacity: 0.85; }
+      50% { transform: translate(-150px, -100px) scale(0.9); opacity: 0.4; }
+    }
+
+    /* Header Nav Bar */
+    header {
+      position: fixed;
+      top: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(92%, 950px);
+      height: 58px;
+      background: rgba(22, 22, 22, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 50px;
+      padding: 0 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 14px;
+      color: #fff;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .logo-img {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1.5px solid rgba(255, 255, 255, 0.25);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      list-style: none;
+    }
+
+    .nav-links a.highlight-feature {
+      color: #ffffff;
+      background: linear-gradient(135deg, rgba(168, 85, 247, 0.5) 0%, rgba(112, 16, 202, 0.7) 100%);
+      border: 1px solid rgba(168, 85, 247, 0.8);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.3s ease;
+      animation: attentionPulse 2s infinite ease-in-out;
+    }
+
+    @keyframes attentionPulse {
+      0% { transform: scale(1); box-shadow: 0 0 10px rgba(168, 85, 247, 0.4); }
+      50% { transform: scale(1.08); box-shadow: 0 0 22px rgba(168, 85, 247, 0.9), 0 0 35px rgba(168, 85, 247, 0.6); }
+      100% { transform: scale(1); box-shadow: 0 0 10px rgba(168, 85, 247, 0.4); }
+    }
+
+    .nav-links a.highlight-feature i { animation: starSpin 3s infinite linear; }
+    @keyframes starSpin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+    .top-join-btn {
+      background: #ffffff;
+      color: #000000;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 30px;
+      font-weight: 700;
+      font-size: 13px;
+      white-space: nowrap;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    /* Hero Section Desktop Layout (> 900px) */
+    .hero-container {
+      position: relative;
+      width: 100%;
+      height: 100dvh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding-top: 50px;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .hero-text-div {
+      flex: 1;
+      font-size: clamp(2.5rem, 5.5vw, 5.5rem);
+      font-weight: 800;
+      letter-spacing: -1px;
+      user-select: none;
+      white-space: nowrap;
+      background: linear-gradient(90deg, #fca5a5 0%, #d8b4fe 50%, #e0e7ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      z-index: 5;
+    }
+
+    .hero-text-div.left-text {
+      text-align: right;
+      padding-right: clamp(10px, 2vw, 30px);
+    }
+
+    .hero-text-div.right-text {
+      text-align: left;
+      padding-left: clamp(10px, 2vw, 30px);
+    }
+
+    /* iPhone Div Wrapper */
+    .iphone-mockup-wrapper {
+      position: relative;
+      height: min(610px, calc(100dvh - 110px));
+      width: calc(min(610px, calc(100dvh - 110px)) * 0.5);
+      z-index: 10;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .iphone-frame-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 20;
+      pointer-events: none;
+      object-fit: contain;
+    }
+
+    .iphone-frame-fallback {
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 40px;
+      border: 8px solid #1c1c1e;
+      box-shadow: 0 0 0 2px #3a3a3c, inset 0 0 0 2px #000;
+      z-index: 25;
+      pointer-events: none;
+    }
+
+    .iphone-mockup-wrapper.frame-failed .iphone-frame-fallback { display: block; }
+
+    .iphone-screen {
+      position: absolute;
+      top: 1.8%;
+      left: 3.6%;
+      width: 92.8%;
+      height: 96.4%;
+      border-radius: min(36px, 6vw);
+      background: #000000;
+      z-index: 10;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Fixed Status Bar */
+    .iphone-status-bar {
+      width: 100%;
+      padding: min(18px, 2.8vh) 18px 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: min(10.5px, 1.6vh);
+      font-weight: 600;
+      color: #fff;
+      z-index: 15;
+    }
+
+    /* Discord Application UI */
+    .discord-app {
+      flex: 1;
+      min-height: 0;
+      background: #000000;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .discord-header {
+      padding: 6px 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      background: #000000;
+    }
+
+    .server-title {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 700;
+      font-size: min(11px, 1.8vh);
+      color: #ffffff;
+      max-width: 80%;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .server-title .gear-badge {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 16px;
+      height: 16px;
+      background: #ffffff;
+      color: #000;
+      border-radius: 50%;
+      font-size: 9px;
+      flex-shrink: 0;
+    }
+
+    .server-title .highlight-text { color: #93c5fd; font-weight: 800; }
+
+    .discord-body {
+      flex: 1;
+      min-height: 0;
+      padding: 6px 8px;
+      overflow-y: auto;
+      font-size: min(10px, 1.6vh);
+      color: #949ba4;
+    }
+
+    .discord-body::-webkit-scrollbar { width: 2px; }
+    .discord-body::-webkit-scrollbar-thumb { background: #2b2d31; }
+
+    .category-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #949ba4;
+      font-weight: 700;
+      font-size: 8.5px;
+      margin: 8px 0 3px;
+    }
+
+    .channel-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 3px 4px;
+      color: #b5bac1;
+      font-size: min(10px, 1.5vh);
+      border-radius: 4px;
+      margin-bottom: 2px;
+    }
+
+    .channel-left {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      overflow: hidden;
+      max-width: 75%;
+    }
+
+    .channel-prefix { color: #80848e; font-weight: 600; width: 10px; flex-shrink: 0; text-align: center; }
+    .channel-name { color: #dbdee1; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    .vc-limit-badge {
+      background: #111214;
+      border: 1px solid #2b2d31;
+      padding: 1px 4px;
+      border-radius: 8px;
+      font-size: 8px;
+      color: #949ba4;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .vc-limit-badge.active-users { background: #23a55a; color: #ffffff; border-color: #23a55a; }
+
+    /* User Control Panel */
+    .user-control-panel {
+      margin: 2px 4px;
+      padding: 4px 6px;
+      background: #08080a;
+      border: 1px solid #18181b;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .user-info { display: flex; align-items: center; gap: 5px; overflow: hidden; }
+
+    .avatar-wrapper { position: relative; width: 22px; height: 22px; flex-shrink: 0; }
+    .avatar-wrapper img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+
+    .status-dot {
+      position: absolute;
+      bottom: -1px;
+      right: -1px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      border: 1.5px solid #08080a;
+      background: #f23f43;
+    }
+
+    .user-details .username { font-size: 9.5px; font-weight: 700; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .user-details .subtext { font-size: 7.5px; color: #949ba4; }
+
+    .control-buttons { display: flex; align-items: center; gap: 3px; flex-shrink: 0; }
+    .ctrl-box { background: #1a080a; border: 1px solid #3c1218; border-radius: 4px; padding: 2px 3px; display: flex; align-items: center; color: #f23f43; font-size: 7.5px; }
+    .gear-btn { color: #b5bac1; font-size: 9px; margin-left: 1px; }
+
+    /* Custom Join Button */
+    .custom-join-btn {
+      position: relative;
+      margin: 3px 8px min(16px, 2vh);
+      height: min(32px, 5vh);
+      background: linear-gradient(90deg, #7010ca 0%, #a855f7 100%);
+      border-radius: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 2px 3px 2px 10px;
+      text-decoration: none;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(168, 85, 247, 0.25);
+    }
+
+    .custom-join-btn span { color: #ffffff; font-size: min(11px, 1.7vh); font-weight: 700; z-index: 2; }
+
+    .btn-server-icon-wrap {
+      width: min(24px, 4vh);
+      height: min(24px, 4vh);
+      background: #0f051d;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+      overflow: hidden;
+      flex-shrink: 0;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .btn-server-icon-wrap img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* Modal Dialog Box */
+    .mac-modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100dvh;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .mac-modal-overlay.active { opacity: 1; pointer-events: auto; }
+
+    .mac-modal {
+      width: min(420px, 90vw);
+      background: rgba(28, 28, 30, 0.9);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 16px;
+      overflow: hidden;
+      transform: scale(0.9);
+      transition: transform 0.3s ease;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    .mac-modal-overlay.active .mac-modal { transform: scale(1); }
+
+    .mac-titlebar {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      position: relative;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .mac-buttons { display: flex; gap: 6px; z-index: 2;}
+    .mac-btn { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+    .mac-btn.close-btn { background: #ff5f56; cursor: pointer; }
+    .mac-btn.minimize-btn { background: #ffbd2e; }
+    .mac-btn.maximize-btn { background: #27c93f; }
+
+    .mac-title {
+      position: absolute;
+      left: 60px;
+      width: 80%;
+      text-align: left;
+      font-size: 11px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.85);
+      pointer-events: none;
+      /* padding: 0 50px; */
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .mac-body {
+      padding: 16px;
+      min-height: 185px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .mac-footer {
+      padding: 12px 16px;
+      background: rgba(0, 0, 0, 0.2);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .mac-action-btn {
+      background: linear-gradient(135deg, #a855f7 0%, #7010ca 100%);
+      color: #fff;
+      border: none;
+      padding: 8px 24px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    /* ----------------------------------------------------
+       Responsive View (< 900px) 
+       Exactly as you requested! 
+    ---------------------------------------------------- */
+    @media (max-width: 900px) {
+      header { top: 8px; height: 48px; padding: 0 12px; }
+      .brand-logo { font-size: 12px; gap: 6px; }
+      .logo-img { width: 24px; height: 24px; }
+      .nav-links a.highlight-feature { font-size: 10.5px; padding: 4px 10px; }
+      .top-join-btn { font-size: 11px; padding: 5px 12px; }
+      
+      /* Grid Layout For Mobile */
+      .hero-container {
+        display: grid;
+        grid-template-columns: auto auto; /* দুই কলাম, লেখাগুলো নরমাল সাইজ নিবে */
+        grid-template-rows: auto auto; /* প্রথম সারি লেখা, দ্বিতীয় সারি মোবাইল */
+        justify-content: center; /* পুরো গ্রিড মাঝখানে */
+        align-content: center; 
+        padding-top: 50px;
+        gap: 0; /* মাঝে কোন অতিরিক্ত ফাকা থাকবে না */
+      }
+
+      .hero-text-div {
+        font-size: clamp(3rem, 8vw, 3.5rem);
+        z-index: 5; /* লেখার লেয়ার নিচে */
+      }
+
+      /* বামের লেখা (Meet) */
+      .hero-text-div.left-text {
+        grid-column: 1;
+        grid-row: 1;
+        text-align: right;
+        padding-right: 8px; /* নরমাল গ্যাপ */
+        padding-left: 0;
+      }
+
+      /* ডানের লেখা (- ZERO -) */
+      .hero-text-div.right-text {
+        grid-column: 2;
+        grid-row: 1;
+        text-align: left;
+        padding-left: 8px; /* নরমাল গ্যাপ */
+        padding-right: 0;
+      }
+
+      /* মোবাইল ফোন ( লেখার নিচে এবং ওভারল্যাপ করা ) */
+      .iphone-mockup-wrapper {
+        grid-column: 1 / span 2; /* মোবাইল ২টা কলাম জুড়েই থাকবে */
+        grid-row: 2; /* দ্বিতীয় সারিতে থাকবে */
+        justify-self: center; /* মোবাইল মাঝখানে থাকবে */
+        margin-top: -15px; /* <--- এই মাইনাস মার্জিন মোবাইলটাকে লেখার ওপর হালকা তুলে দিবে */
+        z-index: 10; /* মোবাইলের লেয়ার উপরে থাকবে, তাই লেখাকে ওভারল্যাপ করবে */
+        height: min(540px, calc(100dvh - 160px));
+        width: calc(min(540px, calc(100dvh - 160px)) * 0.5);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background Siren Lights -->
+  <div class="police-lights-bg">
+    <div class="siren-circle siren-red"></div>
+    <div class="siren-circle siren-blue"></div>
+  </div>
+
+  <!-- Header Nav Bar -->
+  <header>
+    <div class="nav-left">
+      <a href="#" class="brand-logo">
+        <img src="adminpp.jpg" alt="Admin Profile" class="logo-img" onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'">
+        <span>Build By</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#" class="highlight-feature" id="featuresBtn"><i class="fa-solid fa-star"></i> Shishir</a></li>
+      </ul>
+    </div>
+    <a href="https://discord.com/invite/kuYGUPSWfA" target="_blank" class="top-join-btn">Join Discord</a>
+  </header>
+
+  <!-- Modal -->
+  <div class="mac-modal-overlay" id="featuresModal">
+    <div class="mac-modal">
+      <div class="mac-titlebar">
+        <div class="mac-buttons">
+          <span class="mac-btn close-btn" id="closeModalBtn"></span>
+          <span class="mac-btn minimize-btn"></span>
+          <span class="mac-btn maximize-btn"></span>
+        </div>
+        <div class="mac-title">Built this website for share ZEROS Discord server</div>
+      </div>
+      <div class="mac-body" style="background-image: url('p_dark_mode.svg');"></div>
+      <div class="mac-footer">
+        <button class="mac-action-btn" id="closeModalActionBtn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="hero-container" id="heroContainer">
+    
+    <!-- 1st Div: Left Text -->
+    <div class="hero-text-div left-text">Meet</div>
+
+    <!-- 2nd Div: Phone Mockup -->
+    <div class="iphone-mockup-wrapper" id="iphoneWrapper">
+      <img src="https://cdn.prod.website-files.com/643e8219320d012584af3b6d/643e8219320d01c132af3b91_iPhone%2014%20Pro%20%E2%80%93%20Space%20Black.webp" class="iphone-frame-overlay" alt="iPhone Frame" onerror="this.style.display='none'; this.closest('.iphone-mockup-wrapper').classList.add('frame-failed')">
+      <div class="iphone-frame-fallback"></div>
+
+      <div class="iphone-screen">
+        <div class="iphone-status-bar">
+          <span>9:41</span>
+          <div style="display: flex; gap: 4px;">
+            <i class="fa-solid fa-signal"></i>
+            <i class="fa-solid fa-wifi"></i>
+            <i class="fa-solid fa-battery-full"></i>
+          </div>
+        </div>
+
+        <div class="discord-app">
+          
+          <div class="discord-header">
+            <div class="server-title">
+              <span class="gear-badge"><i class="fa-solid fa-gear"></i></span>
+              <span id="dynamic-server-name"><span class="highlight-text">- ZEROS -</span></span>
+            </div>
+            <a id="dynamic-invite-link" href="https://discord.com/invite/kuYGUPSWfA" target="_blank" style="color: #b5bac1; text-decoration: none;">
+              <i class="fa-solid fa-user-plus" style="font-size: 10px;"></i>
+            </a>
+          </div>
+
+          <div class="discord-body">
+            
+            <div class="category-item">
+              <span>➭ ॥ ANNOUNCEMENT & NEWS</span>
+              <i class="fa-solid fa-chevron-down" style="font-size: 8px;"></i>
+            </div>
+            <div class="channel-row"><div class="channel-left"><span class="channel-prefix">＃</span><span class="channel-name">╭🤗・WELLCOME-𝒱𝓇′</span></div></div>
+            <div class="channel-row"><div class="channel-left"><span class="channel-prefix">＃</span><span class="channel-name">┊💡・GUIDE</span></div></div>
+            <div class="channel-row"><div class="channel-left"><span class="channel-prefix" style="font-size:9px;">📄</span><span class="channel-name">┊📜・GUIDELINES</span></div></div>
+            <div class="channel-row"><div class="channel-left"><span class="channel-prefix" style="font-size:9px;">🔒</span><span class="channel-name">┊✨・FREEBIES-SQUAD</span></div></div>
+            <div class="channel-row"><div class="channel-left"><span class="channel-prefix">＃</span><span class="channel-name">╰👋・GOODBYE</span></div></div>
+
+            <div class="category-item" style="margin-top: 10px;">
+              <span>➭ ॥ ADDA ZONE ▵ ▾</span>
+              <i class="fa-solid fa-chevron-down" style="font-size: 8px;"></i>
+            </div>
+            <div class="channel-row"><div class="channel-left"><span class="channel-prefix">＃</span><span class="channel-name">╭💭・CHAT-ADDA</span></div></div>
+            <div class="channel-row"><div class="channel-left"><span class="channel-prefix" style="font-size:9px;">🔊</span><span class="channel-name">┊🔊・VOICE : ADDA ◆ 1</span></div></div>
+            <div class="channel-row">
+              <div class="channel-left"><span class="channel-prefix" style="font-size:9px;">🔊</span><span class="channel-name">┊🔊・VOICE : ADDA ◆ 2</span></div>
+              <span class="vc-limit-badge" id="vc-adda-2">00 / 02</span>
+            </div>
+            <div class="channel-row">
+              <div class="channel-left"><span class="channel-prefix" style="font-size:9px;">🔊</span><span class="channel-name">╰🔊・VOICE : ADDA ◆ 3</span></div>
+              <span class="vc-limit-badge" id="vc-adda-3">00 / 03</span>
+            </div>
+
+            <div class="category-item" style="margin-top: 10px;">
+              <span>➭ ॥ AMONG US ▵ ▾</span>
+              <i class="fa-solid fa-chevron-down" style="font-size: 8px;"></i>
+            </div>
+            <div class="channel-row"><div class="channel-left"><span class="channel-prefix">＃</span><span class="channel-name">╭💭・CHAT-LOBBY</span></div></div>
+            <div class="channel-row"><div class="channel-left"><span class="channel-prefix" style="font-size:9px;">👾</span><span class="channel-name">┊🎮・GAME-SPECIFIC</span></div></div>
+            <div class="channel-row">
+              <div class="channel-left"><span class="channel-prefix" style="font-size:9px;">🔊</span><span class="channel-name">┊🔊・VC LOBBY ◆ 1</span></div>
+              <span class="vc-limit-badge" id="vc-lobby-1">00 / 15</span>
+            </div>
+            <div class="channel-row">
+              <div class="channel-left"><span class="channel-prefix" style="font-size:9px;">🔊</span><span class="channel-name">╰🔊・VC LOBBY ◆ 2</span></div>
+              <span class="vc-limit-badge" id="vc-lobby-2">00 / 15</span>
+            </div>
+
+          </div>
+
+          <!-- Bottom User Control Panel -->
+          <div class="user-control-panel">
+            <div class="user-info">
+              <div class="avatar-wrapper">
+                <img src="https://cdn.discordapp.com/embed/avatars/0.png" alt="User Avatar">
+                <div class="status-dot"></div>
+              </div>
+              <div class="user-details">
+                <div class="username">𝘚𝘏𝘐𝘚𝘏𝘐𝘙</div>
+                <div class="subtext">yoamishishir</div>
+              </div>
+            </div>
+
+            <div class="control-buttons">
+              <div class="ctrl-box"><i class="fa-solid fa-microphone-slash"></i></div>
+              <div class="ctrl-box"><i class="fa-solid fa-headphones"></i></div>
+              <i class="fa-solid fa-gear gear-btn"></i>
+            </div>
+          </div>
+
+          <!-- Custom Pill Join Button -->
+          <a href="https://discord.com/invite/kuYGUPSWfA" target="_blank" class="custom-join-btn" id="bottom-join-btn">
+            <span>Join Discord</span>
+            <div class="btn-server-icon-wrap">
+              <img src="serverimg.webp" alt="Server Logo" onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'">
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- 3rd Div: Right Text -->
+    <div class="hero-text-div right-text" id="hero-right-span">- ZEROS -</div>
+
+  </section>
+
+  <script>
+    const BASE_WIDGET_URL = 'https://discord.com/api/guilds/1151554106146705470/widget.json';
+    const DEFAULT_INVITE_LINK = 'https://discord.com/invite/kuYGUPSWfA';
+
+    const featuresBtn = document.getElementById('featuresBtn');
+    const featuresModal = document.getElementById('featuresModal');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const closeModalActionBtn = document.getElementById('closeModalActionBtn');
+
+    function openModal(e) {
+      e.preventDefault();
+      featuresModal.classList.add('active');
+    }
+
+    function closeModal() {
+      featuresModal.classList.remove('active');
+    }
+
+    featuresBtn.addEventListener('click', openModal);
+    closeModalBtn.addEventListener('click', closeModal);
+    closeModalActionBtn.addEventListener('click', closeModal);
+
+    featuresModal.addEventListener('click', (e) => {
+      if (e.target === featuresModal) closeModal();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
+    });
+
+    function normalizeText(text) {
+      return text.toLowerCase().replace(/[^a-z0-9]/g, '');
+    }
+
+    async function updateDiscordData() {
+      try {
+        const cacheBusterUrl = `${BASE_WIDGET_URL}?t=${Date.now()}`;
+        const response = await fetch(cacheBusterUrl, { cache: 'no-store' });
+        
+        if (!response.ok) return;
+        const data = await response.json();
+
+        if (data.name) {
+          document.getElementById('dynamic-server-name').innerHTML = `<span class="highlight-text">${data.name}</span>`;
+          document.getElementById('hero-right-span').innerText = data.name;
+        }
+
+        const inviteUrl = DEFAULT_INVITE_LINK;
+        document.getElementById('dynamic-invite-link').href = inviteUrl;
+        document.getElementById('bottom-join-btn').href = inviteUrl;
+
+        updateBadge('vc-adda-2', '00 / 02', 0);
+        updateBadge('vc-adda-3', '00 / 03', 0);
+        updateBadge('vc-lobby-1', '00 / 15', 0);
+        updateBadge('vc-lobby-2', '00 / 15', 0);
+
+        if (data.channels && data.members) {
+          const vcCounts = {};
+          
+          data.members.forEach(m => {
+            if (m.channel_id) {
+              vcCounts[m.channel_id] = (vcCounts[m.channel_id] || 0) + 1;
+            }
+          });
+
+          data.channels.forEach(ch => {
+            const count = vcCounts[ch.id] || 0;
+            const formattedCount = String(count).padStart(2, '0');
+            const cleanName = normalizeText(ch.name);
+
+            if (cleanName.includes('adda2')) {
+              updateBadge('vc-adda-2', `${formattedCount} / 02`, count);
+            } else if (cleanName.includes('adda3')) {
+              updateBadge('vc-adda-3', `${formattedCount} / 03`, count);
+            } else if (cleanName.includes('vclobby1') || cleanName.includes('lobby1')) {
+              updateBadge('vc-lobby-1', `${formattedCount} / 15`, count);
+            } else if (cleanName.includes('vclobby2') || cleanName.includes('lobby2')) {
+              updateBadge('vc-lobby-2', `${formattedCount} / 15`, count);
+            }
+          });
+        }
+      } catch (err) {
+        console.log('Discord API Error:', err);
+      }
+    }
+
+    function updateBadge(id, text, activeCount) {
+      const badge = document.getElementById(id);
+      if (badge) {
+        badge.innerText = text;
+        if (activeCount > 0) {
+          badge.classList.add('active-users');
+        } else {
+          badge.classList.remove('active-users');
+        }
+      }
+    }
+
+    updateDiscordData();
+    setInterval(updateDiscordData, 10000);
+  </script>
+</body>
+</html>
